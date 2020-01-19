@@ -68,13 +68,16 @@ func (c *Cart) GetTotalAmountAfterDiscount() float64 {
 }
 
 func (c *Cart) ApplyCoupon(coupon Coupon) {
-	if coupon.MinAmount < c.DiscountPrice {
+	if coupon.MinAmount <= c.DiscountPrice {
 		c.DiscountPrice = coupon.NewPrice(c.DiscountPrice)
 	}
 }
 
 func (c *Cart) GetCouponDiscount(coupon Coupon) float64 {
-	return coupon.NewPrice(c.DiscountPrice)
+	if coupon.MinAmount <= c.DiscountPrice {
+		return coupon.NewPrice(c.DiscountPrice)
+	}
+	return 0.0
 }
 
 func (c *Cart) GetCampaignDiscount() float64 {
@@ -91,12 +94,12 @@ func (c *Cart) GetDeliveryCost(delivery Delivery) float64 {
 	return delivery.CalculateFor(c)
 }
 
-func (c *Cart) getTotalDiscount(coupon Coupon) float64 {
+func (c *Cart) GetTotalDiscount(coupon Coupon) float64 {
 	// campaign and coupon
 	return c.GetCampaignDiscount() + c.GetCouponDiscount(coupon)
 }
 
-func (c *Cart) getProductsGroupByCategory() []CategoryGroup {
+func (c *Cart) GetProductsGroupByCategory() []CategoryGroup {
 	//distinct category and products
 	var categories []CategoryGroup
 	for _, sp := range c.shoppingProducts {
@@ -113,22 +116,22 @@ func (c *Cart) getProductsGroupByCategory() []CategoryGroup {
 	return categories
 }
 
-func (c *Cart) getNumberOfDeliveries() int {
+func (c *Cart) GetNumberOfDeliveries() int {
 	//distinct category count
 	var categories []string
 	for _, sp := range c.shoppingProducts {
-		if !hasElement(sp.Product.Category.Title, categories) {
+		if !HasElement(sp.Product.Category.Title, categories) {
 			categories = append(categories, sp.Product.Category.Title)
 		}
 	}
 	return len(categories)
 }
 
-func (c *Cart) getNumberOfProduct() int {
+func (c *Cart) GetNumberOfProduct() int {
 	// distinct product count
 	var products []string
 	for _, sp := range c.shoppingProducts {
-		if !hasElement(sp.Product.Title, products) {
+		if !HasElement(sp.Product.Title, products) {
 			products = append(products, sp.Product.Title)
 		}
 	}
@@ -136,7 +139,7 @@ func (c *Cart) getNumberOfProduct() int {
 }
 
 func (c *Cart) Print(delivery Delivery) {
-	productsGroupByCategory := c.getProductsGroupByCategory()
+	productsGroupByCategory := c.GetProductsGroupByCategory()
 	for _, categoryGroup := range productsGroupByCategory {
 		// category info
 		fmt.Println("Category: ", categoryGroup.category.Title)
@@ -151,5 +154,4 @@ func (c *Cart) Print(delivery Delivery) {
 	fmt.Println("Total Discount: ", c.TotalPrice-c.DiscountPrice)
 	fmt.Println("Total Price: ", c.DiscountPrice)
 	fmt.Println("Delivery Cost: ", c.GetDeliveryCost(delivery))
-
 }

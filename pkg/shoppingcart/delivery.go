@@ -7,7 +7,7 @@ type Delivery struct {
 }
 
 func (d *Delivery) CalculateFor(cart *Cart) float64 {
-	numberOfDeliveries := float64(cart.getNumberOfDeliveries())
-	numberOfProduct := float64(cart.getNumberOfProduct())
+	numberOfDeliveries := float64(cart.GetNumberOfDeliveries())
+	numberOfProduct := float64(cart.GetNumberOfProduct())
 	return (d.CostPerDelivery * numberOfDeliveries) + (d.CostPerProduct * numberOfProduct) + d.FixedCost
 }

@@ -1,6 +1,6 @@
 package shoppingcart
 
-func hasElement(elementName string, elements []string) bool {
+func HasElement(elementName string, elements []string) bool {
 	for _, element := range elements {
 		if element == elementName {
 			return true

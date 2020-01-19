@@ -51,3 +51,22 @@
 	Total Discount:  99
 	Total Price:  351
 	Delivery Cost:  7.99
+
+
+### Test
+
+    mehmet@mkaykisiz:~/go/src/ShoppingCartTY/pkg/shoppingcart$ go test -cover
+    TotalAmountAfterDiscount:  390
+    Category:  Food
+    Apple  - Unit Price:  100  x  3
+    ---------------
+    Category:  Food
+    Almond  - Unit Price:  150  x  1
+    ---------------
+    Total Price Before Discount:  450
+    Total Discount:  99
+    Total Price:  351
+    Delivery Cost:  7.99
+    PASS
+    coverage: 100.0% of statements
+    ok      ShoppingCartTY/pkg/shoppingcart 0.002s
